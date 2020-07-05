@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "550129971325",
+    "firebase_url": "https://flutterquotesapp.firebaseio.com",
+    "project_id": "flutterquotesapp",
+    "storage_bucket": "flutterquotesapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550129971325:android:3f16d6c775c107c2550114",
+        "android_client_info": {
+          "package_name": "com.myt.flutterimagespicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550129971325-uu2k475aph3av1nfa95pnp122bk1rug8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBML61r4xy7RqUq-fFbh8y1_Bof6GWrecU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550129971325-uu2k475aph3av1nfa95pnp122bk1rug8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "550129971325-aum4voi1ckt6m97nhmsjr1oqn8v1vhh3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myt.quotesapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550129971325:android:b752908fc1eaad64550114",
+        "android_client_info": {
+          "package_name": "com.myt.quotesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550129971325-uu2k475aph3av1nfa95pnp122bk1rug8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBML61r4xy7RqUq-fFbh8y1_Bof6GWrecU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550129971325-uu2k475aph3av1nfa95pnp122bk1rug8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "550129971325-aum4voi1ckt6m97nhmsjr1oqn8v1vhh3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myt.quotesapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
