@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -28,13 +30,13 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   /// Active image file
   File _imageFile;
-
+  final picker = ImagePicker();
   /// Select an image via gallery or camera
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    PickedFile selected = await picker.getImage(source: source, maxHeight: 240, maxWidth: 320);
 
     setState(() {
-      _imageFile = selected;
+      _imageFile = File(selected.path);
     });
   }
 
@@ -64,11 +66,17 @@ class _ImageCaptureState extends State<ImageCapture> {
          children: <Widget>[
            IconButton(
              icon: Icon(Icons.photo_camera),
-             onPressed: () => _pickImage(ImageSource.camera),
+             onPressed: () {
+               _clear();
+               return _pickImage(ImageSource.camera);
+             },
            ),
            IconButton(
              icon: Icon(Icons.photo_library),
-             onPressed: () => _pickImage(ImageSource.gallery),
+             onPressed: () {
+               _clear();
+               return _pickImage(ImageSource.gallery);
+             },
            )
          ],
        ),
@@ -110,11 +118,24 @@ class _UploaderState extends State<Uploader> {
 
   StorageUploadTask _uploadTask;
 
-  void _startUpload() {
+  void _startUpload() async {
       String filePath = 'images/${DateTime.now()}.png';
 
       setState(() {
         _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
+      });
+
+    var storageTaskSnapshot = await _uploadTask.onComplete;
+    var downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    debugPrint(downloadUrl);
+      Firestore.instance.collection("images").add({
+        "category": "flower",
+        "name": "rose",
+        "imageUrl": downloadUrl
+      }).then((response) {
+        print(response.documentID);
+      }).catchError((error) {
+        print(error);
       });
   }
 
