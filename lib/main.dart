@@ -28,13 +28,13 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   /// Active image file
   File _imageFile;
-
+  final picker = ImagePicker();
   /// Select an image via gallery or camera
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    PickedFile selected = await picker.getImage(source: source);
 
     setState(() {
-      _imageFile = selected;
+      _imageFile = File(selected.path);
     });
   }
 
