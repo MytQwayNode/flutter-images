@@ -120,7 +120,9 @@ class _UploaderState extends State<Uploader> {
   StorageUploadTask _uploadTask;
 
   String dropdownValue;
-  List<String> _categories = ['Alyssa', 'Beloha', 'Cathy', 'Daddy'];
+  List<String> _categories = [];
+  TextEditingController filenameInputController = TextEditingController();
+  String filename;
 
   void _startUpload(String filename) async {
     String filePath = 'images/$filename${DateTime.now()}.png';
@@ -141,6 +143,39 @@ class _UploaderState extends State<Uploader> {
     }).catchError((error) {
       print(error);
     });
+  }
+
+  @override
+  void initState() {
+    /// TEST ENUM based FIRESTORE
+    super.initState();
+
+    Firestore.instance
+        .collection("dropdownList")
+        .document("category")
+        .get()
+        .then((value) {
+      setState(() {
+        value.data["list"].forEach((element) {
+          _categories.add(element.toString());
+          print(element);
+        });
+      });
+    });
+
+    filenameInputController.addListener(() {
+      setState(() {
+        filename = filenameInputController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    filenameInputController.dispose();
+    super.dispose();
   }
 
   @override
@@ -174,40 +209,38 @@ class _UploaderState extends State<Uploader> {
             );
           });
     } else {
-      TextEditingController filenameInputController = TextEditingController();
-
-
       return Container(
           child: Column(
-            children: <Widget>[
-              DropdownButton(
-                hint: Text("Please choose a category"),
-                value: dropdownValue,
-                items: _categories.map((location) {
-                  return DropdownMenuItem(
-                    child: new Text(location),
-                    value: location,
-                  );
-                }).toList(),
-                onChanged: (newValue){
-                  setState(() {
-                    dropdownValue = newValue;
-                  });
-                  debugPrint(dropdownValue);
-                },
-              ),
-              TextField(
-                controller: filenameInputController,
-                decoration: InputDecoration(
-                  labelText: "Filename:",
-                ),
-              ),
-              FlatButton.icon(
-                  onPressed: () => _startUpload(filenameInputController.text),
-                  icon: Icon(Icons.cloud_upload),
-                  label: Text('Upload to Firebase')),
-            ],
-          ));
+        children: <Widget>[
+          DropdownButton(
+            hint: Text("Please choose a category"),
+            value: dropdownValue,
+            items: _categories.map((location) {
+              return DropdownMenuItem(
+                child: new Text(location),
+                value: location,
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              setState(() {
+                dropdownValue = newValue;
+              });
+              debugPrint(dropdownValue);
+            },
+          ),
+          TextField(
+            controller: filenameInputController,
+            decoration: InputDecoration(
+              labelText: "Filename:",
+            ),
+          ),
+          if (dropdownValue != null && filename!="")
+            FlatButton.icon(
+                onPressed: () => _startUpload(filenameInputController.text),
+                icon: Icon(Icons.cloud_upload),
+                label: Text('Upload to Firebase')),
+        ],
+      ));
     }
 
     return Container();
