@@ -124,8 +124,8 @@ class _UploaderState extends State<Uploader> {
   TextEditingController filenameInputController = TextEditingController();
   String filename;
 
-  void _startUpload(String filename) async {
-    String filePath = 'images/$filename${DateTime.now()}.png';
+  void _startUpload() async {
+    String filePath = 'images/$dropdownValue/{DateTime.now()}.png';
 
     setState(() {
       _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
@@ -135,8 +135,8 @@ class _UploaderState extends State<Uploader> {
     var downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
     debugPrint(downloadUrl);
     Firestore.instance.collection("images").add({
-      "category": "flower",
-      "name": "rose",
+      "category": dropdownValue,
+      "name": filename,
       "imageUrl": downloadUrl
     }).then((response) {
       print(response.documentID);
@@ -236,7 +236,7 @@ class _UploaderState extends State<Uploader> {
           ),
           if (dropdownValue != null && filename!="")
             FlatButton.icon(
-                onPressed: () => _startUpload(filenameInputController.text),
+                onPressed: _startUpload,
                 icon: Icon(Icons.cloud_upload),
                 label: Text('Upload to Firebase')),
         ],
